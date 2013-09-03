@@ -1,0 +1,27 @@
+{
+  "name": "guess",
+  "version": "0.1.0",
+  "description": "AskFast example guessing game",
+  "main": "server.js",
+  "dependencies": {
+    "askfast": "~0.1.1",
+    "cradle": "~0.6.6",
+    "express": "~3.3.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "askfast/example-node-guess.git"
+  },
+  "keywords": [
+    "guessing",
+    "game",
+    "nodejs"
+  ],
+  "author": "Sven Stam",
+  "license": "Apache"
+}
