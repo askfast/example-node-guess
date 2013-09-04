@@ -26,27 +26,29 @@ var Agent = function(bid, req, res, next) {
             res.end(askfast.finalize());
         });
     } else if(query.function=="bid") {
-        var answer = askfast.getResult();
-        var amount = 0;
-        if(answer.answer_text!=null) {
-            if(isNaN(answer.answer_text)) {
-                askfast.ask("U heeft een ongeldig aantal gegeven. Geef een getal tussen 1 en 100 000.","?function=bid&responder="+responder);
+        return askfast.getResult().receive(function(answer) {
+            var amount = 0;
+            if(answer.answer_text!=null) {
+                if(isNaN(answer.answer_text)) {
+                    console.log("Amount NaN?", answer.answer_text);
+                    askfast.ask("U heeft een ongeldig aantal gegeven. Geef een getal tussen 1 en 100 000.","?function=bid&responder="+responder);
+                    res.writeHead(200, {'Content-Type': 'application/json'});
+                    res.end(askfast.finalize());
+                    return;
+                } else {
+                    amount = parseInt(answer.answer_text);
+                }
+            }
+            return bid.update(responder, amount, function(err, result) {
+
+                if(!err) {
+                    askfast.say("Bedankt voor uw gok!");
+                } else {
+                    askfast.ask("Er is iets misgegaan geef nogmaals het aantal op dat u denkt dat in de vaas zit?","?function=bid&responder="+responder);
+                }
                 res.writeHead(200, {'Content-Type': 'application/json'});
                 res.end(askfast.finalize());
-                return;
-            } else {
-                amount = answer.answer_text;
-            }
-        }
-        return bid.update(responder, amount, function(err, result) {
-
-            if(!err) {
-                askfast.say("Bedankt voor uw gok!");
-            } else {
-                askfast.ask("Er is iets misgegaan geef nogmaals het aantal op dat u denkt dat in de vaas zit?","?function=bid&responder="+responder);
-            }
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(askfast.finalize());
+            });
         });
     } else {
         return bid.findByAddress(responder, function(err, doc){

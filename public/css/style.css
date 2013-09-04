@@ -1,0 +1,60 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #e00a7c;
+    overflow: hidden;
+}
+
+#speech-bubble {
+    background: url('../img/bubble.png') no-repeat;
+    background-size: cover;
+    display: inline-block;
+    color: #e00a7c;
+    font-size: 16px;
+    text-align: left;
+}
+
+#smile {
+    display: inline-block;
+}
+
+#smile img {
+}
+
+footer {
+    background-color: white;
+    text-align: right;
+    position: fixed;
+    bottom:0;
+    width: 100%;
+}
+
+@media only screen and (min-width: 1025px){
+    #speech-bubble {
+        font-size: 40px;
+    }
+}
+
+@media only screen and (min-width: 960px) and (max-width: 1024px) {
+    #speech-bubble {
+        font-size: 30px;
+    }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 959px) {
+    #speech-bubble {
+        font-size: 30px;
+    }
+}
+
+@media only screen and (min-width: 480px) and (max-width: 599px) {
+    #speech-bubble {
+        font-size: 20px;
+    }
+}
+
+@media only screen and (max-width: 479px) {
+    #speech-bubble {
+        font-size: 16px;
+    }
+}
