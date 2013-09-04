@@ -8,29 +8,34 @@ var Agent = function(bid, req, res, next) {
 
     var responder = query.responder;
     if(query.function=="name") {
-        var result = askfast.getResult();
-        var name = "test";
-        if(result.answer_text!=null) {
-            name = result.answer_text;
-        }
-        return bid.create(responder, name, function(err, result) {
+        return askfast.getResult().receive(function(answer) {
+            var name = "test";
+            if(answer!=null && answer.answer_text!=null) {
+                name = answer.answer_text;
+                return bid.create(responder, name, function(err, result) {
 
-            askfast.ask("Geef een aantal op dat u denkt dat in de vaas zit?","?function=bid&responder="+responder);
+                    askfast.ask(answer.answer_text+" geef een aantal op dat u denkt dat in de vaas zit?","?function=bid&responder="+responder);
 
+                    res.writeHead(200, {'Content-Type': 'application/json'});
+                    res.end(askfast.finalize());
+                });
+            } else {
+                askfast.ask("Wat leuk dat u mee doet met het raadspel. Wat is uw naam?","?function=name&responder="+responder);
+            }
             res.writeHead(200, {'Content-Type': 'application/json'});
             res.end(askfast.finalize());
         });
     } else if(query.function=="bid") {
-        var result = askfast.getResult();
+        var answer = askfast.getResult();
         var amount = 0;
-        if(result.answer_text!=null) {
-            if(isNaN(result.answer_text)) {
+        if(answer.answer_text!=null) {
+            if(isNaN(answer.answer_text)) {
                 askfast.ask("U heeft een ongeldig aantal gegeven. Geef een getal tussen 1 en 100 000.","?function=bid&responder="+responder);
                 res.writeHead(200, {'Content-Type': 'application/json'});
                 res.end(askfast.finalize());
                 return;
             } else {
-                amount = result.answer_text;
+                amount = answer.answer_text;
             }
         }
         return bid.update(responder, amount, function(err, result) {
