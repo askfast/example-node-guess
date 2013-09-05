@@ -15,12 +15,51 @@ var username = '';
 var password = '';
 var magicNumber = 236;
 
+var ENTRANCE = {text: "Hoeveel diamanten zitten er in de vaas? Doe een gok!", img: 'enterance.png'}, // How many diamonds are there? Make your shot
+    START = {text: "Raad eens hoeveel diamanten zitten er in de vaas?", img: 'happy.png'}, // How many diamonds are there? Make your shot
+    CLOSE1 = {text: "Dat is wel heel dichtbij.", img: 'sasirmis.png'},  //It is really close.
+    CLOSE2 = {text: "Hoe kan je zo dichtbij zitten?", img: 'close2.png'}, // How can you be that close?
+    OFF1 = {text: "Nee! Niet eens in de buurt!", img: 'duzyuz.png'}, // Nope. Your guess is off the chart
+    OFF2 = {text: "In welke vaas kijk jij?", img: 'happy2.png'}, // Do you need glasses?
+    WINNER = {text: "Gefeliciteerd! Je heb het goed!", img: 'winner.png'}, // You are the winner, Sir!
+    NOACTIVITY = {text: "Waarom doet er niemand mee?", img: 'noactivity.png'}; //Why do not you play with me guys?
+
 $( document ).ready(function() {
 
     startTimerNoActvity();
     setSizes();
-    //var screen = {'html':'<br>Raad eens hoeveel diamanten er in deze vaas zitten?','smile':'blink.png'};
-    var screen = {'html':'<strong>Hey you,</strong><br />How many diamonds are there? Make your shot','smile':'enterance.png'};
+    var screen = {'html':'<strong>Hi,</strong><br />'+ENTRANCE.text,'smile':ENTRANCE.img};
+    var screenname = getUrlVars()["screen"];
+    if(screenname!=null) {
+        switch(screenname) {
+            case 'entrance':
+                screen = {'html':'<strong>Hi,</strong><br />'+ENTRANCE.text,'smile':ENTRANCE.img};
+                break;
+            case 'start':
+                screen = {'html':'<strong>Hi,</strong><br />'+START.text,'smile':START.img};
+                break;
+            case 'close1':
+                screen = {'html':'<strong>Hi,</strong><br />'+CLOSE1.text,'smile':CLOSE1.img};
+                break;
+            case 'close2':
+                screen = {'html':'<strong>Hi,</strong><br />'+CLOSE2.text,'smile':CLOSE2.img};
+                break;
+            case 'off1':
+                screen = {'html':'<strong>Hi,</strong><br />'+OFF1.text,'smile':OFF1.img};
+                break;
+            case 'off2':
+                screen = {'html':'<strong>Hi,</strong><br />'+OFF2.text,'smile':OFF2.img};
+                break;
+            case 'winner':
+                screen = {'html':'<strong>Hi,</strong><br />'+WINNER.text,'smile':WINNER.img};
+                break;
+            case 'noactivity':
+                screen = {'html':'<strong>Hi,</strong><br />'+NOACTIVITY.text,'smile':NOACTIVITY.img};
+                break;
+            default:
+                screen = {'html':'<strong>Hi,</strong><br />'+ENTRANCE.text,'smile':ENTRANCE.img};
+        }
+    }
     slideScreen(screen);
 
     var filter= function(doc){
@@ -46,16 +85,20 @@ function loadChange(id) {
     db.get(id, function(err, doc){
         if(doc.address) {
             if(doc.amount==null) {
-                var screen = {'html':'<strong>Hey '+doc.name+',</strong><br />How many diamonds are there? Make your shot','smile':'happy.png'};
-                //$("#container").html("Bericht van: "+doc.address+"<br>Hallo "+doc.name+", Wat is uw bod?");
+                var screen = {'html':'<strong>Hey '+doc.name+',</strong><br />'+START.text,'smile':START.img};
                 slideScreen(screen);
             } else {
-                //$("#container").html("Bericht van: "+doc.address+"<br>Hallo "+doc.name+", Bedankt voor uw bod van: "+doc.amount);
-                var screen = {'html':'<strong>'+doc.name+',</strong><br />Nope. Your guess is off the chart','smile':'duzyuz.png'};
+                var random = Math.random();
+                var screen = {'html':'<strong>'+doc.name+',</strong><br />'+OFF1.text,'smile':OFF1.img};
+                if(random>0.5)
+                    screen = {'html':'<strong>'+doc.name+',</strong><br />'+OFF2.text,'smile':OFF2.img};
+
                 if(doc.amount==magicNumber) {
-                    screen = {'html':'<strong>'+doc.name+',</strong><br />You are the winner, Sir!','smile':'winner.png'};
-                } else if(doc.amount >= (magicNumber-15) || doc.amount <= (magicNumber+15)) {
-                    screen = {'html':'<strong>Interesting '+doc.name+'</strong> How can you be that close?','smile':'close2.png'};
+                    screen = {'html':'<strong>'+doc.name+',</strong><br />'+WINNER.text,'smile':WINNER.img};
+                } else if(doc.amount >= (magicNumber-15) && doc.amount <= (magicNumber+15)) {
+                    screen = {'html':'<strong>Interesting '+doc.name+'</strong> '+CLOSE1.text,'smile':CLOSE1.img};
+                    if(random>0.5)
+                        screen = {'html':'<strong>'+doc.name+',</strong><br />'+CLOSE2.text,'smile':CLOSE2.img};
                 }
 
                 slideScreen(screen);
@@ -79,7 +122,8 @@ function startTimerStart() {
 }
 
 function showStart() {
-    var screen = {'html':'<br>Raad eens hoeveel diamanten er in deze vaas zitten?','smile':'blink.png'};
+    var screen = {'html':'<strong>Hi,</strong><br />'+ENTRANCE.text,'smile':ENTRANCE.img};
+    //var screen = {'html':'<br>Raad eens hoeveel diamanten er in deze vaas zitten?','smile':'blink.png'};
     slideScreen(screen);
 }
 
@@ -96,9 +140,8 @@ function startTimerNoActvity() {
 
 function showNoActivity() {
     console.log("No activity");
-    var screen = {'html':'<strong>Why do not you play with me guys?</strong>','smile':'noactivity.png'};
+    var screen = {'html':'<strong>'+NOACTIVITY.text+'</strong>','smile':NOACTIVITY.img};
     slideScreen(screen);
-    //$("#container").html("Vinden jullie mij niet leuk????");
 }
 
 /*
@@ -191,4 +234,17 @@ function getPageHeight()
 
 function getRandomInt (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
 }
