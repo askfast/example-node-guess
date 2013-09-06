@@ -1,10 +1,13 @@
 var AskFast = require("askfast"),
     url = require('url'),
+    host = null;
     path = "agent";
 
 var Agent = function(bid, req, res, next) {
     // Create a new instance of the AskFast object.
     var askfast = new AskFast(req);
+    if(host!=null)
+        askfast.url = host;
     var query = url.parse(req.url,true).query;
 
     var responder = query.responder;
@@ -47,7 +50,7 @@ var Agent = function(bid, req, res, next) {
                     res.end(askfast.finalize());
                     return;
                 }
-                return bid.create(responder, responder, amount, function(err, result) {
+                return bid.update(responder, amount, function(err, result) {
 
                     if(!err) {
                         askfast.say("/audio/bedankt.wav");
@@ -90,7 +93,11 @@ var Agent = function(bid, req, res, next) {
         return bid.findByAddress(responder, function(err, doc){
             if(prefMedium!=null && prefMedium=="audio/wav") {
                 if(err && err.error=='not_found') {
-                    askfast.ask("audio/start.wav",path+"?function=bid&responder="+responder+"&preferred_medium=audio/wav");
+                    return bid.create(responder, S(responder).left(responder.length-2)+'**', null, function(err, result) {
+                        askfast.ask("audio/start.wav",path+"?function=bid&responder="+responder+"&preferred_medium=audio/wav");
+                        res.writeHead(200, {'Content-Type': 'application/json'});
+                        res.end(askfast.finalize());
+                    });
                 } else {
                     if(doc.amount) {
                         askfast.say("/audio/retry.wav");
