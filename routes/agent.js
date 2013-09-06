@@ -93,7 +93,7 @@ var Agent = function(bid, req, res, next) {
         return bid.findByAddress(responder, function(err, doc){
             if(prefMedium!=null && prefMedium=="audio/wav") {
                 if(err && err.error=='not_found') {
-                    return bid.create(responder, S(responder).left(responder.length-2)+'**', null, function(err, result) {
+                    return bid.create(responder, responder.substring(0,responder.length-2)+'**', null, function(err, result) {
                         askfast.ask("audio/start.wav",path+"?function=bid&responder="+responder+"&preferred_medium=audio/wav");
                         res.writeHead(200, {'Content-Type': 'application/json'});
                         res.end(askfast.finalize());
