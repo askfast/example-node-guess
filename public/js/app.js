@@ -89,16 +89,16 @@ function loadChange(id) {
                 slideScreen(screen);
             } else {
                 var random = Math.random();
-                var screen = {'html':'<strong>'+doc.name+',</strong><br />'+doc.amount+' '+OFF1.text,'smile':OFF1.img};
+                var screen = {'html':'<strong>'+doc.name+',</strong><br />'+doc.amount+'?! '+OFF1.text,'smile':OFF1.img};
                 if(random>0.5)
-                    screen = {'html':'<strong>'+doc.name+',</strong><br />'+doc.amount+' '+OFF2.text,'smile':OFF2.img};
+                    screen = {'html':'<strong>'+doc.name+',</strong><br />'+doc.amount+'?! '+OFF2.text,'smile':OFF2.img};
 
                 if(doc.amount==magicNumber) {
                     screen = {'html':'<strong>'+doc.name+',</strong><br />'+WINNER.text,'smile':WINNER.img};
                 } else if(doc.amount >= (magicNumber-15) && doc.amount <= (magicNumber+15)) {
-                    screen = {'html':'<strong>Interessant '+doc.name+'</strong><br/>'+doc.amount+' '+CLOSE1.text,'smile':CLOSE1.img};
+                    screen = {'html':'<strong>Interessant '+doc.name+'</strong><br/>'+doc.amount+'?! '+CLOSE1.text,'smile':CLOSE1.img};
                     if(random>0.5)
-                        screen = {'html':'<strong>Interessant '+doc.name+',</strong><br />'+doc.amount+' '+CLOSE2.text,'smile':CLOSE2.img};
+                        screen = {'html':'<strong>Interessant '+doc.name+',</strong><br />'+doc.amount+'?! '+CLOSE2.text,'smile':CLOSE2.img};
                 }
 
                 slideScreen(screen);
