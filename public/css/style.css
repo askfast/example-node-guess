@@ -15,6 +15,33 @@ body {
     text-align: center;
 }
 
+#box {
+    background-color: #ffffff;
+    border: 2px solid #e10b7d;
+    -moz-border-radius: 18px;
+    -webkit-border-radius: 18px;
+    border-radius: 18px;
+    /*IE 7 AND 8 DO NOT SUPPORT BORDER RADIUS*/
+    -moz-box-shadow: 0px 0px 2px #000000;
+    -webkit-box-shadow: 0px 0px 2px #000000;
+    box-shadow: 0px 0px 2px #000000;
+    /*IE 7 AND 8 DO NOT SUPPORT BLUR PROPERTY OF SHADOWS*/
+    opacity: 0.88;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity = 88);
+    /*-ms-filter must come before filter*/
+    filter: alpha(opacity = 88);
+    /*INNER ELEMENTS MUST NOT BREAK THIS ELEMENTS BOUNDARIES*/
+    /*All filters must be placed together*/
+
+    text-align: left;
+    padding:1%;
+    width:25%;
+    position:absolute;
+    font-family: 'Lato', sans-serif;
+    color: #240217;
+
+
+}
 #smile {
     display: inline-block;
 }
