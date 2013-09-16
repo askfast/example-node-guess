@@ -40,7 +40,7 @@ var Agent = function(bid, req, res, next) {
                 if(answer!=null && answer.answer_text!=null) {
                     if(isNaN(answer.answer_text) || parseInt(answer.answer_text)<=0) {
                         console.log("Amount NaN?", answer.answer_text);
-                        askfast.ask("/audio/invalid.wav",path+"?function=bid&responder="+responder+"&medium="+medium+"&preferred_medium=audio/wav");
+                        askfast.ask("/audio/invalid_new.wav",path+"?function=bid&responder="+responder+"&medium="+medium+"&preferred_medium=audio/wav");
                         res.writeHead(200, {'Content-Type': 'application/json'});
                         res.end(askfast.finalize());
                         return;
@@ -48,7 +48,7 @@ var Agent = function(bid, req, res, next) {
                         amount = parseInt(answer.answer_text);
                     }
                 } else {
-                    askfast.ask("/audio/invalid.wav",path+"?function=bid&responder="+responder+"&medium="+medium+"&preferred_medium=audio/wav");
+                    askfast.ask("/audio/invalid_new.wav",path+"?function=bid&responder="+responder+"&medium="+medium+"&preferred_medium=audio/wav");
                     res.writeHead(200, {'Content-Type': 'application/json'});
                     res.end(askfast.finalize());
                     return;
@@ -56,9 +56,9 @@ var Agent = function(bid, req, res, next) {
                 return bid.update(responder, medium, amount, function(err, result) {
 
                     if(!err) {
-                        askfast.say("/audio/bedankt.wav");
+                        askfast.say("/audio/bedankt_new.wav");
                     } else {
-                        askfast.ask("/audio/start.wav",path+"?function=bid&responder="+responder+"&medium="+medium+"&preferred_medium=audio/wav");
+                        askfast.ask("/audio/start_new.wav",path+"?function=bid&responder="+responder+"&medium="+medium+"&preferred_medium=audio/wav");
                     }
                     res.writeHead(200, {'Content-Type': 'application/json'});
                     res.end(askfast.finalize());
@@ -97,15 +97,15 @@ var Agent = function(bid, req, res, next) {
             if(prefMedium!=null && prefMedium=="audio/wav") {
                 if(err && err.error=='not_found') {
                     return bid.create(responder, medium, responder.substring(0,responder.length-2)+'**', null, function(err, result) {
-                        askfast.ask("audio/start.wav",path+"?function=bid&responder="+responder+"&medium="+medium+"&preferred_medium=audio/wav");
+                        askfast.ask("audio/start_new.wav",path+"?function=bid&responder="+responder+"&medium="+medium+"&preferred_medium=audio/wav");
                         res.writeHead(200, {'Content-Type': 'application/json'});
                         res.end(askfast.finalize());
                     });
                 } else {
                     if(doc.amount) {
-                        askfast.say("/audio/retry.wav");
+                        askfast.say("/audio/retry_new.wav");
                     } else {
-                        askfast.ask("audio/start.wav",path+"?function=bid&responder="+responder+"&medium="+medium+"&preferred_medium=audio/wav");
+                        askfast.ask("audio/start_new.wav",path+"?function=bid&responder="+responder+"&medium="+medium+"&preferred_medium=audio/wav");
                     }
                 }
             } else {
