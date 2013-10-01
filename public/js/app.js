@@ -13,14 +13,14 @@ var noActivityTimer = null;
 var couchHost = '';
 var username = '';
 var password = '';
-var magicNumber = 236;
+var magicNumber = 27;
 
-var ENTRANCE = {text: "Hoeveel diamanten zitten er in de vaas? Doe een gok!", img: 'enterance.png'}, // How many diamonds are there? Make your shot
-    START = {text: "Raad eens hoeveel diamanten zitten er in de vaas?", img: 'happy.png'}, // How many diamonds are there? Make your shot
+var ENTRANCE = {text: "Hoeveel driehoeken staan er op het scherm? Doe een gok!", img: 'enterance.png'}, // How many diamonds are there? Make your shot
+    START = {text: "Raad eens hoeveel driehoeken er op het scherm staan?", img: 'happy.png'}, // How many diamonds are there? Make your shot
     CLOSE1 = {text: "Dat is wel heel dichtbij.", img: 'sasirmis.png'},  //It is really close.
     CLOSE2 = {text: "Hoe kan je zo dichtbij zitten?", img: 'close2.png'}, // How can you be that close?
     OFF1 = {text: "Nee! Niet eens in de buurt!", img: 'duzyuz.png'}, // Nope. Your guess is off the chart
-    OFF2 = {text: "In welke vaas kijk jij?", img: 'happy2.png'}, // Do you need glasses?
+    OFF2 = {text: "Op welk scherm kijk jij?", img: 'happy2.png'}, // Do you need glasses?
     WINNER = {text: "Gefeliciteerd! Je heb het goed!", img: 'winner.png'}, // You are the winner, Sir!
     NOACTIVITY = {text: "Waarom doet er niemand mee?", img: 'noactivity.png'}; //Why do not you play with me guys?
 
@@ -95,7 +95,7 @@ function loadChange(id) {
 
                 if(doc.amount==magicNumber) {
                     screen = {'html':'<strong>'+doc.name+',</strong><br />'+WINNER.text,'smile':WINNER.img};
-                } else if(doc.amount >= (magicNumber-15) && doc.amount <= (magicNumber+15)) {
+                } else if(doc.amount >= (magicNumber-5) && doc.amount <= (magicNumber+5)) {
                     screen = {'html':'<strong>Interessant '+doc.name+'</strong><br/>'+doc.amount+'?! '+CLOSE1.text,'smile':CLOSE1.img};
                     if(random>0.5)
                         screen = {'html':'<strong>Interessant '+doc.name+',</strong><br />'+doc.amount+'?! '+CLOSE2.text,'smile':CLOSE2.img};

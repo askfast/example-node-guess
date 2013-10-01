@@ -22,7 +22,7 @@ var Agent = function(bid, req, res, next) {
                 name = answer.answer_text;
                 return bid.create(responder, medium, name, null, function(err, result) {
 
-                    askfast.ask(answer.answer_text+" geef een aantal op dat u denkt dat in de vaas zit?",path+"?function=bid&responder="+responder+"&medium="+medium);
+                    askfast.ask(answer.answer_text+" geef het aantal driehoeken op dat u denkt dat er op het scherm staan?",path+"?function=bid&responder="+responder+"&medium="+medium);
 
                     res.writeHead(200, {'Content-Type': 'application/json'});
                     res.end(askfast.finalize());
